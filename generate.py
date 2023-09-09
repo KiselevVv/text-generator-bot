@@ -1,16 +1,24 @@
 import random
 from collections import defaultdict
+from typing import List, Tuple
 
 from nltk.tokenize import WhitespaceTokenizer
 from nltk.util import ngrams
 
 
 class TextGenerator:
+    """
+    Генератор текста на основе троек слов из корпуса.
+    attr:
+        file: Путь к файлу с корпусом текста.
+        cached_trigrams: Кешированные тройки слов из корпуса.
+    """
     def __init__(self):
         self.file = 'corpus/corpus.txt'
         self.cached_trigrams = None
 
-    def get_trigrams(self):
+    def get_trigrams(self) -> List[Tuple[str, str, str]]:
+        """Возвращает тройки слов из корпуса текста."""
         if self.cached_trigrams is not None:
             return self.cached_trigrams
 
@@ -20,7 +28,12 @@ class TextGenerator:
             self.cached_trigrams = list(ngrams(tokenized, 3))
             return self.cached_trigrams
 
-    def corpus_count(self, last_tokens):
+    def corpus_count(self, last_tokens: Tuple[str, str]) -> str:
+        """
+        Генерирует следующее слово на основе последних двух слов.
+        :param last_tokens: Последние два слова.
+        :return: Следующее слово.
+        """
         trigrams = self.get_trigrams()
         corpus_cnt = defaultdict(lambda: defaultdict(int))
         for triple in trigrams:
@@ -33,7 +46,11 @@ class TextGenerator:
         weights = list(corpus_cnt[x].values())
         return random.choices(keys, weights=weights)
 
-    def get_first_words(self):
+    def get_first_words(self) -> Tuple[str, str]:
+        """
+        Генерирует первые два слова в начале предложения.
+        :return: Первые два слова.
+        """
         random_triple = random.choice(self.get_trigrams())
         if random_triple[0].istitle() and random_triple[0][-1] not in ['.',
                                                                        '!',
@@ -41,7 +58,11 @@ class TextGenerator:
             return random_triple[0], random_triple[1]
         return self.get_first_words()
 
-    def generate(self):
+    def generate(self) -> str:
+        """
+        Генерирует текст на основе корпуса текста.
+        :return: Сгенерированное предложение.
+        """
         result = []
         while True:
             if len(result) == 0:

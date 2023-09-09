@@ -153,5 +153,3 @@ dmypy.json
 cython_debug/
 
 .idea/
-/bigrams.py
-/corpus.txt

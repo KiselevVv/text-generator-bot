@@ -70,7 +70,7 @@ class TextGenerator:
             last_tokens = (result[-2], result[-1])
             random_token = self.corpus_count(last_tokens)
             result.append(random_token[0])
-            if random_token[0][-1] in ['.', '!', '?'] and len(result) > 7:
+            if random_token[0][-1] in ['.', '!', '?'] and len(result) > 10:
                 break
 
         return ' '.join(result)

@@ -19,12 +19,12 @@ updater = Updater(token=TELEGRAM_TOKEN)
 # Настройка логирования
 logging.basicConfig(
     level=logging.DEBUG,
-    filename='main.log',
+    filename='../main.log',
     filemode='w',
     format='%(asctime)s - %(levelname)s - %(message)s',
 )
 handler = RotatingFileHandler(
-    'main.log',
+    '../main.log',
     maxBytes=50000000,
     backupCount=5,
 )
@@ -34,6 +34,12 @@ handler.setFormatter(logging.Formatter('%(asctime)s -'
                                        ' %(levelname)s -'
                                        ' %(message)s'))
 logger.addHandler(handler)
+
+# Добавление обработчика для вывода логов на консоль
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(
+    logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(console_handler)
 
 
 def generate_text(update, context):
